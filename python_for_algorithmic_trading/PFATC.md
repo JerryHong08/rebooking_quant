@@ -1,0 +1,366 @@
+---
+title: Python For Algorithmic Trading
+markmap:
+    colorFreezeLevel: 2
+---
+
+## Preface
+
+- Algorithmic Trading
+  - Art of Statistical Models
+  - Tools for Competitive Edge
+  - Python for Design, Backtest, Deploy Strategies
+- Book' Goal
+  - Professional Techniques for Non-Professionals
+  - Digestible Recipes
+  - Strong Foundation in Tools & Techniques
+- Author's Expertise
+  - Jason Strimple: 20+ Years Algorithmic Trading & Python
+  - Taught 1,000+ Students('Getting Started with Python for Quant Finance')
+- Python Advantages
+  - Accessible & Easy to Learn
+  - Thousands o f Powerful Libraries
+  - Access Financial Data
+  - Perform Complex Calculations
+  - Efficient Model Backtesting
+- Target Audience
+  - Active Traders & Investors
+    - Lverage Algorithmic Strategies
+    - Acquire & Process Free Market Data(OpenBB)
+    - Build Research Environment
+  - Python Developers with Market Interest
+    - Apply Programming Skills to Finance
+    - Bridge Coding & Trading Gap
+    - Indetify Alpha Factors, Engineer Signals
+    - VectorBT for Walk-Forward Optimization
+  - Aspiring Algorithmic Traders
+    - Foundational Knowledge & Tools
+    - Build Production-Ready Backtests(Zipline)
+    - Evaluate Factor Performance
+    - Connect & Send Orders(Interactive Brokers API)
+    - Delpoy Strategies to Live Environment
+- What This Books Cover(Chapters)
+  - Chapter 1: Acquire Free Financial Market Data
+  - Chapter 2: Analyze and Transform Financial Market Data(pandas)
+  - Chapter 3: Visualize Financial Market Data(Matplotlib, Seaborn, Ploty Dash)
+  - Chapter 4: Store Financial Market Data
+  - Chapter 5: Build Alpha Factors for Stock Portfolio
+  - Chapter 6: Vector-Based Backtesting with VectorBT
+  - Chapter 7: Event-Based Backtesting Factor Portfolio with Zipline Reloaded
+  - Chapter 8: Evaluate Factor Risk and Performance with Alphalens Reloaded
+  - Chapter 9: Assess Backtest Risk and Performance Metrics with Pyfolio
+  - Chapter 10: Set Up the Interactive Brokers Python API
+  - Chapter 11: Manage Orders, Positions, and Portfolio with the IB API
+  - Chapter 12: Deploy Strategies to a Live Environment
+  - Chapter 13: Advanced Recipes for Market Data and Strategy Management
+- Technical Requirements
+  - Python 3.10
+  - Anaconda Distribution(recommended)
+  - OpenBB Platform 4+
+  - Pandas 2+
+  - PostgresSQL(where necessary)
+  - Code Examples: macOS with M2 chip
+
+## Contributors
+
+- skip
+
+## Chapter 1: Acquire Free Financial Market Data
+
+- Data: World's Most Valuable Resouce
+- Crucial for Algorithmic Trading : High-Quality, Reliable Data
+- Python Libraries for Free Data Acquisition
+- OpenBB Platform Addresses Data Collection Challenges
+- Data Varies Across Source(Pricing, Adjustments)
+- Focus on Mainstream Financial Data(Alternative data excluded)
+- Recipes
+  - Continuous Futures Data(Nasdaq Data Link)
+  - S&P 500 Ratios Data(Nasdaq Data Link)
+  - Stock Market Data(OpenBB Platform)
+  - Historic Futures Data(OpenBB Platform)
+  - Options Market Data(OpenBB Platform)
+  - Factor Data(pandas_dtareader)
+- Technical Setup
+  - Anaconda Distribution Recommended
+  - Jupyter Notebook & Python Scipts
+  - Conda Package Manager(update, create environment)
+  - Install Jupyter Notebook(pip)
+  - Install OpenBB Platform(pip install openbb[all])
+- Nasdaq Data Link
+  - Previously Quandl
+  - Access to 600 Futures Contrcts
+  - Continuous Futures Data for Long-Term Backtesting
+  - S&P 500 Ratios(PE, Shiller PE, Earnings Yield, Real Price)
+  - API Key
+    - Free Account for Higher API Call Limits
+    - Sign up on Nasdaq Data Link Website
+  - OpenBB Platform
+    - Single Interface for Hundreds of Data Feeds
+    - Command-Line Interface(for Manual Research)
+    - Python Platform(for Programmatic Access)
+    - Free to Use
+    - Web-based UI(OpenBB Hub) for Configuration/API Keys
+    - Download Stock Data(historical, fundamental)
+    - Custom Stock Screeners(Finviz backen)
+    - Fecth Historic Furtues Data(individual contracts)
+    - Navigate Options Market Data(options chains, histroical, Greeks)
+  - pandas_datareader
+    - Harnessing Factor Data(Fama-French Factors)
+    - Fama-French Three-Factor Model
+    - Small Minus Big(SMB)
+    - High Minus Low(HML)
+    - Rm-Rf(Market Excess Return)
+    - Access Data from Many Remote Online Sources
+
+## Chapter 2: Analyze and Transform Financial Market Data(pandas)
+
+- Origin: Wes McKinney at AQR Capital Management(2009)
+- Standard Tool for Data Analysis with Python
+- Well-suited for Tabular Data
+- Integrates with Other Python Libraries
+- Capabilities: Missing Data, Reshaping, Merging, Loading Data
+- Recipes
+  - Padas Index Types
+  - Building Pandas Series and DataFrames
+  - Manipulating and Transforming DataFrames
+  - Examining and Selecting Data from DataFrames
+  - Calculating Asset Returns using pandas
+  - Measuring the Volatility of a Return Series
+  - Generating a Cumulative Return Series
+  - Resampling Data for Different Time Frames
+  - Addressing Missing Data Issures
+  - Applying Custom Functions to Analyze Time Series Data
+- Pandas Data Structures
+  - Series
+    - One-dimensional Labeled Arrary
+    - Holds Any Data Type
+    - Axis Labels: Index
+    - Handles Missing Data(Numpy NaN)
+    - Methods for Statistical Functions, String Manipulation, Ploting
+  - DataFrame
+    - Two-dimensional Data Structure(Spreadsheet-like)
+    - Rows and Columns of Different Types
+    - Easy Data Manipulation: Aggregation, Slicing, Merging
+    - Handles Missing Data Gracefully
+- Pandas Index Types
+  - Immutable Sequence
+  - Used for Indexing and Alignment
+  - Fast Loopup & Relational Operations
+  - Can Contain Values of Any Type
+  - Built-in Methods(sorting, grouping, set operations)
+  - Seven Types of Indexes
+  - Int64Index(integers)
+  - DatatimeIndex(time series data, timezone naive/localized)
+  - PeriodIndex(ranges of periods, e.g., quarters)
+  - MultiIndex(hierarchical Index, complex data organization)
+- DataFrame Manipulation
+  - Creating New Columns(aggregates, Booleans, Strings)
+  - Concatenating DataFrames(row-wise, column-wise)
+  - Pivoting DataFrames(pivot_tables, aggfunc)
+  - Grouping Data(groupby, multiple columns, custom fuctions)
+  - Joining DataFrames(SQL-like joins, straddle prices example)
+- Data Selection
+  - head(), tail(), .values, .describe()
+  - Selecting Columns (df['col'], df[['col']])
+  - Slicing Rows by Index(0:3, not inclusive)
+  - loc(label-based indexing, single/range/list of rows/cols)
+  - iloc(interger-location-based indexing, single/range/list of rows/cols)
+  - Boolean Indexing(conditional selection, query method)
+  - Partial String Indexing(datetime strings:'2023', '2023-07')
+  - at (fast scalar access)
+  - nlargest, nsmallest(top/ bottom N values)
+- Calculating Asset Retuns
+  - Simple Returns(R_t = (P_t - P_{t-1}/P_{t-1}))
+  - Aggregate Across Assets
+  - Compound(Log)Returns(r_t=log(P_t/P_{t-1}))
+  - Additive Over Time
+  - Preferred in Practice(less influenced by extremes, mathematical properties)
+  - pct_change() method
+  - periods argument(multi-period returns)
+  - freq parameter(resample returns)
+- Measuring Volatility
+  - Key Indicator of Risk
+  - Standard Deviation(quantifies dispersion of returns)
+  - Higher Std Dev =  More Volatility = Higher Risk
+  - Used in Risk-Adjusted Returns(e.g., Sharpe Ratio)
+  - Annualizing Volatility(multiply by sqrt(trading_days)e.g.,252 for daily)
+  - Rolling Volatility
+- Cumulative Return Series
+  - Quantifies Total Change in Investment Value
+  - Simple Returns:(1 + R_t)*(1+R_{t-1})-1(cumprod)
+  - Compound Returns:Sum of Single-Period Returns(cumsum)
+  - fillna(0.0) for missing values
+- Resampling Data
+  - Unsampling(lower to higher frequency)
+  - Downsampling(higher to lower frequency)
+  - Useful for Aligning Trade & Quote Data, Long-Term Trend Analysis
+  - resmaple() method(aggregates data: first, last, mean, ohlc)
+  - rule, axis, closed, label, convention, kind, loffset, based, on, level, origin, offset arguments
+  - asfreq() method(changes frequency without aggregation)
+  - Handles NaN values(backfill, pad, fill_value)
+  - Business Day Offset(pd.offset.BDay())
+- Addressing Missing Data
+  - Common Issue in Financial Data
+  - Reason: Market Closures, Data Availability, Delisting, Granularity
+  - fillna() method(value, axis, inplace, limit, downcast)
+  - bfill()(backfill with next valid observation)
+  - ffill()(foward-fill with last valid observation)
+  - interpolate() method(linear, polynomial, time, spatial)
+- Apply Custom Functions
+  - apply() function (transformation beyond standard methods)
+  - Accepts anonymous lamba or user-defined functions
+  - axis=1 for row-wise application
+  - args parameter for extra arguments
+  - transform() method(after groupby, returns same shape)
+  - Note: apply() can be slow on large DataFrames
+
+## Chapter 3: Visualize Financial Market Data
+
+- First Step: Visualize and Explore Data
+- Five Powerful Tools: pandas,Matplotlib, Seaborn, Plotly, Ploty Dash
+- Each Tool has Pros and Cons based on Use Case
+- Recipes
+  - Quickly Visualizing Data using pandas
+  - Animating the Evolution of the Yield Curve with Matplotlib
+  - Plotting Options Implied Volatility Surfaces with Matplotlib
+  - Visualizing Statistical Relationships with Seaborn
+  - Creating an Interactive PCA Analytics Dashboard with Ploty Dash
+- Pandas Plotting
+  - Built-in plotting functionality(Matplotlib backend by default)
+  - Line Plot(closing price)
+  - Bar Chart(daily returns, styling options)
+  - Histogram(returns distribution, bins)
+  - Box-and-Whisker Plot(median, quartiles, outliers)
+  - Scatter Plot(relationship between two assets)
+  - scatter_matrix(pairwise relationships, histograms on diagonal)
+  - bootstrap_plot(evaluate variability of a statistic)
+- Matplotlib Advanced Plotting
+  - Advanced Functionality(3D surfaces, animated charts)
+  - Animating Yield Curve Evolution
+    - Yield curve: charts bond yields across maturities
+    - Typically slopes upward
+    - Inverted yield curve often proceedes recession
+    - Uses FuncAnimation(initialization, animate function, blitting)
+  - Plotting Options Implied Volatility Surfaces
+    - Visualizes how IV changes with expiration and strike
+    - Important for Market Expectations of Future Volatility
+    - Show Skew(IV vs. Strike) and Term Structure(IV vs. expiry)
+    - Uses mpl_toolkits.mplot3d.Axes3D.plot_surface
+- Searbon Statistical Visualizations
+  - Tailor-made for Statistical Relationships
+  - Built on Matplotlib, intergrates with pandas
+  - Importance for Factor Engineering(creating predictos)
+  - Box Plot(summarizing monthly returns)
+  - Jointplot(scatter plot + marginal histograms, correlation assessment)
+  - Correlation Matrices(heatmap for multiple asset relationships)
+- Plotly Dash Interactive Dashboards
+  - Framework for Building Interactive Web Apps with Python
+  - PCA Analytics Dashboard Example
+    - PCA: Dimensionality Reduction(identify latent return drivers)
+    - Isolates Statistical Return Drivers('alpha factor')
+    - Interactive UI for dates, components, ticker symbols
+    - Components: dcc.Input, dcc.DatePickerRange, html.Button
+    - Callbacks: update_graphs(connects inputs to outputs)
+    - Outputs: Bar Chart(explained variance), Line Chart(cumulative explained variance)
+
+## Chapter 4: Store Financial Market Data
+
+- Local Data: Speed of Access, Reliability, Insulation from Outages
+- Cost-Efficiency vs. Cloud Expenses
+- Flexibility, Intergration with Reasearch Workflows, Faster Backtsts
+- Recipes
+  - Storing Data on Disk in CSV Format
+  - Storing Data on Disk with SQLite
+  - Storing Data in a Networked Postgres Database
+  - Storing Data in Ultra-Fast HDF5 Format
+- CSV Format
+  - Universally Recognized, Simple
+  - Favored for Straightforward Import/Export
+  - Easily Handled by pandas(to_csv, read_csv)
+  - Compatible with other tools(Tableau, PowerBI)
+  - Manual Inspection Possible
+  - Less Speed/Sophistication than other methods
+  - to_csv options:sep, header, na_rep, date_fromat, float_format
+  - read_csv options: delimiter, nrows, parse_dates, dtype, skiprows
+- PostgreSQL Datavase Server
+  - Advanced Open Source Relational Database System
+  - Handles Vast Datasets, Intricate Querying
+  - Improved Performance over On-Disk Options
+  - Popular for Cloud Providers(AWS)
+  - Scalability Robustness for High-Frequency Data/Concurrent Access
+  - Setup More Involved
+  - SQLAlchemy(Python toolkit for DB interaction, ORM)
+  - psycopg2(PostgreSQL adpter for Python)
+  - create_engine(connect to DB)
+  - create_database_and_get_engine(handle DB creation)
+- Ultra-Fast HDF5 Format
+  - Hierarchical Data Format(HDF4, HDF5)
+  - Engineered for Volumious Data Storage & Management
+  - Open Source, Accommodates Large, Complex Heterogeneous Datasets
+  - Directory-like Structure, Versatile Data Organization
+  - Primary Objects: Datasets(multidimentsional arrays), Groups(containers)
+  - Python Support: h5py, PyTables
+  - pandas.HDFStore(uses PyTables under the hood)
+  - Advantages: Fast, Columnar Storage for Numerical Datam Small Memory Footprint
+  - Useful for Storing Related Data in Hierarchy(options chains, futures expirations)
+
+## Chapter 5: Build Alpha Factors for Stock Portfolios
+
+- Professional Traders Construct Factor Portfolios to Exploit Market Inefficiencies
+- Factors Act as Fundamental Building Blocks of Investing(Persistent Forces)
+- Trading Edge: Consistent, Non-Random Inefficiency
+- Factor Analysis Steps
+  - Identifying Factors
+  - Determining Sensitivity of Portfolio to Factors
+  - Taking Action(Hedging Undesirable Risk, Incresing Exposure)
+- Python Libraries
+  - scikit-learn(Principal Component Analysis)
+  - Statsmodels(Linear Regression)
+  - Zipline Reloaded Pippline API(Prepare for Factor Analysis)
+- Recipes
+  - Identifying Latent Return Drivers using Principal Component Analysis
+  - Finding and Hedging Portfolio Beta using Linear Regression
+  - Analyzing Portfolio Sensitivities to the Fama-French Factors
+  - Assessing Market Inefficiency based on Volatility
+  - Preparing a Factor Ranking Model using Zipline Reloaded Pipelines
+- Principal Component Analysis(PCA)
+  - Dimensionality Reduction Technique
+  - Transforms Original Feartures into Principal Components(max variance)
+  - Indentifies & Quantifies Sources of Risk(market, sector, asset-specific)
+  - scikit-learn.decomposition.PCA
+  - Explained Variance Ratio, Cumulative Explained Variance
+  - Factor Returns(transformed original returns)
+  - Factor Exposures(asset sensitivity to principal components)
+- Finding and Hedging Portfolio Beta(Linear Regression)
+  - Traders Seek Specific Risks, Hedge Others
+  - Factor Models Explain Asset/Portfolio Returns(Y = α + βX)
+  - Beta: Sensitivity of Porforlio Returns to Risk Factor
+  - Hedging: Neutralize Broader Market Exposure(short factor)
+  - Statsmodels(sm.add_constant, OLS)
+  - Alpha: Intercept, Excess Return
+  - Information Ratio(Risk-adjusted performance: active_return/tracking_error)
+- Analyzing Porfolio Sensitivities(Fama-French Factors)
+  - Lower Volatility Stocks Historicallly Outperform Higher Volatility(Market Inefficiency)
+  - Forward Returns: Returns of Security in Future Period
+  - Spearman Rank Correlation: Relationship between Factor and Forward Returns
+  - High Correlation = Predictive Power
+  - Parkinson Estimator: Uses high/low prices for more accurate volatility
+  - SciPy.stats.spearmanr(rank correlation & p-value)
+- Preparing a Factor Ranking Model(Zipline Reloaded Pipelines)
+  - Zipline Reloaded: Open Source Python Library for Backtesting
+  - Pipeline API
+    - Define Factors from Data Columns(bundles)
+    - Efficiently Process Large Data, Filter Assets
+    - Rank Universe of Stocks
+    - Output for Alphalens Library
+  - Installation
+    - Conda for Intel x86, Dependencies + Pip for Apple Silicon
+    - Free Nasdaq Data Link Bundle(3000 stocks, through 2018)
+    - Custom Momentum Factor(252-day windows)
+    - SimplePipelineEngine(loader, asset_finder)
+    - AverageDollarVolume(screen for liquidity)
+    - Built-in Factor Classes: ExponentialWeightedMovingAverage, BollingerBands, VWAP, AnnualizedVolatility, MaxDrawdown
+
+## Chapter 6: Vector-Based Backtesting  with VectorBT
+
+- Next Phase of Workflow: Backtesting
