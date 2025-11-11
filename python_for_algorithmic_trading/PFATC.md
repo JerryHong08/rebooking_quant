@@ -364,3 +364,141 @@ markmap:
 ## Chapter 6: Vector-Based Backtesting  with VectorBT
 
 - Next Phase of Workflow: Backtesting
+- Quick Iteration Through Ideas is Critical
+- VectorBT: High-Performance, Vector-Based Backtesting Framework
+- Efficient Evaluation by Processing Entire Time-Series Data Arrays at Once
+- Significantly Speeds Up Backtesting Operations
+- Highly Customizable, Fine-Tune Parameters, Assess Multiple Strategies
+- Built on pandas, NumPy, Numba(JIT compiler for speed)
+- Recipes
+  - Building Technical Strategies with VectorBT
+  - Conducting Walk-Forward Optimization VectorBT
+  - Optimizing the SuperTrend Strategy with VectorBT Pro
+- Building Techinical Strategies
+  - Simple Moving Average Crossover Strategy(Hello World)
+  - vbt.YFData.download(built-in data downloader)
+  - vbt.MA.run(moving average indicator)
+  - ma_crossed_above, ma_crossed_below(entry/exit signal)
+  - vbt.Portfolio.from_holding(simple holding strategy comparison)
+  - Split Testing(vbt.range_split for multi-panel data)
+  - Trading Statistics(pf.orders.stats)
+  - Performance Metrics(pf.sharpe_ratio)
+- Conducting Walk-Forward Optimization
+  - Addresses Curve-Fitting in Strategy Development
+  - Divides Dataset into In-Sample(optimization) and Out-of-Sample(validation)Periods
+  - Repeated('walked forward') Through Entire Dataset
+  - Assesses Strategy Robustness and Future Performance
+  - Computationally Intensive, but More Rigorous
+  - vbt.rolling_split(splits into rolling in-sample/out-of-sample periods)
+  - Simulate all parameter combinations(maximize Sharpe Ratio)
+  - Scipy.stas.ttest_ind(assess statistical significance of overfitting)
+- Optimizing SuperTrend Strategy with VectorBT Pro
+  - SuperTrend Indicator: Trend-following, identifies momentum direction
+  - Constructed using Average True Range(ATR) and Multiplier
+  - Signals: Price above SuperTrend(uptrend, buy), Price below SuperTrend(downtrend, sell)
+  - VectorBT Pro
+    - Full-featured Version of VectorBT
+    - Enhancements: Data from Nasdaq Data Link, AlphaVantage, Polygon
+    - Synthetic Data Generators, Multi-threading, Stop Laddering, Time Stops
+    - Portfolio Optimization(RiskFolio-Lib, PyPortfolioOpt)
+    - Custom Indicator using TA-Lib and Numba(JIT compilation @njit)
+  - Multi-threaded Data Downloading(vbt.YFData.pull)
+  - Indicator Factory Class(vbt.IF) to convert functions to indicators
+  - Heatmap(visualize parameter hotspots/max Sharpe ratio)
+
+## Chapter 7: Event-Based Backtesting Factor Portfolios with Zipline Reloaded
+
+- Event-Driven Backtesting Framework
+- Processes Market Events Sequentially(Realistic Modeling of Execution/Slippage)
+- Accounts for Temporal Sequence of Market Events
+- Suitable for Complex Strategies(conditional orders, asset interactions)
+- Slower than Vector-Based, but Better Simulates Market Dynamics
+- Helpful for Path-Dependent Strategies
+- Well suited for Large Universe & Complex Portfolio Construction
+- Pipeline API: High-Efficiency Computation of Factors
+- Results Analyzed with other Zipline Reloaded Ecosystem Tools
+- Recipes
+  - Backtesting a Momentum Factor Strategy with Zipline Reloaded
+  - Exploring a Mean Reversion Strategy with Zipline Reloaded
+- Techinical Requirements
+  - Install depends on OS(conda for Intel x86, Homebrew + conda/pip for Apple Silicon)
+  - Free Nasdaq Data Link Bundle(3,000 stocks through 2018)
+- Backtesting Momentum Factor Strategy
+  - Custom Factor computes momentum score(252-day window)
+  - Zipline Reloaded Framework Intergration
+  - Inspect Strategy Performance
+  - Nasdaq Data Link API Key(Environment Variable)
+  - Key Zipline Features
+    - Data and Time Rules(schedule_function)
+    - Pipeline API(attach_pipeline, pipeline_output)
+    - Custom Factors(MomentumFactor, AverageDollarVolume)
+    - Commission and Slippage Models(set_commission, set_slippage)
+    - Record(data for output DataFrame)
+    - Order Target Percent(order_target_percent)
+    - get_open_orders, get_datetime, can_trade
+  - before_trading_start(hook for pipeline output)
+  - initialize(run when backtest starts, shedules rebalance)
+  - rebalance(logic to bug/short top/bottom N stocks)
+  - exec_trades(abstracted order execution)
+  - run_algorithm(starts backtest, outputs Dataframe)
+  - Output DataFrame(trading, risk, performance statistics)
+  - Inspect Key Outputs(cumulative returns, daily returns histogram, rolling Sharpe ratio)
+  
+## Chapter 8: Evaluate Factor Risk and Performance with Alphalens Reloaded
+
+- Factor Investing: Assets chosen based on attributes/factors for higher returns
+- Differs from Traditional Strategies(asset classes)
+- Systematic Identification and Harnessing of Factors
+- Enhance Portfolio Diversification & Potential Returns(does not eliminate risk)
+- Alphalens Reloaded: Library for Performance Analysis of Predictive Alpha Factors
+- Assesses Quality of Signals to Predict Future Returns
+- Integrates with Zipline Reloaded(use backtest output)
+- Provides Tear Sheet(cumulative returns, turnover, information coefficients)
+- Recipes
+  - Preparing Backtest Results
+  - Evaluating the Information Coefficient
+  - Examining Factor Return Performance
+  - Evaluating Factor Turnover
+- Preparing Backtest Results
+  - Manipulate Zipline Output for Alphalens Reloaded
+  - pandas.read_pickle(deserialize backtest output)
+  - Construct Prices DataFrame(symbols in columns, dates in rows)
+  - Convert Zipline Equity Objects to Strings
+  - Normalize Timestamps to Midnight
+  - Construct Factor Data Series(MultiIndex: date, symbol, factor rank)
+  - alphalens.utils.get_clean_factor_and_forward_returns(create MultiIndex DataFrame for analysis)
+  - Parameters: factor, prices, periods(5,10,21,63 days)
+  - Results: DataFrame with forward returns, factor values, factor quantiles
+- Evaluating the Information Coefficient(IC)
+  - Fundamental Metric in Quantitative Portfolio Construction
+  - Gauges Predictive Power of Forecast Relative to Future Returns
+  - Uses Spearman Rank Correlation(non-parametric, monotonic relationship)
+  - IC Range: -1 to 1(Positive: predictive, Near Zero: no capacitym, Negative: inverse)
+  - Origins: Jack L.Treynor(1960s), Fischer Black(1970s)
+  - Alphalens Reloaded Functions
+  - factor_information_coefficient(IC for each holding period/date)
+  - mean_information_coefficient
+  - plot_information_table(statistical properties: mean, std dev, t-stat, p-value, skew, kurtosis)
+  - plot_ic_ts(IC evolution through time)
+  - IC Decay(how quickly correlation diminished)
+  - Resample Daily IC to Quarterly Mean
+- Examining Factor Return Performance
+  - Factor Performance: Returns from Factor-Based Portfolio
+  - Long Assets with High Factor Values, Short with Low
+  - Primary Objective: Assess Factor Performance, Premium over Benchmark
+  - Alphalens Reloaded Functions
+  - factor_returns(period-wise returns, factor-weighted, by_asset=True)
+  - factor_cumulative_returns(cumulative returns, compare equal-weighted)
+  - mean_return_by_quantile(mean returns for factor quantiles)
+  - compute_mean_returns_spread(difference in mean returns between upper/lower quantiles)
+  - factor_alpha_beta(calculate alpha and beta)
+- Evaluating Factor Turnover
+  - Turnover: Quantifies Frequency of Assets Bought/Sold to Rebalance Quantiles
+  - High Tunrover: Signals Not Persistent, Higher Trading Costs
+  - Low Turnover: More Stable Signals
+  - Analyze at Quantile Level(stability of rankings)
+  - Alphalens Reloaded Functions
+  - quantile_turunover(proportion of assets not in quantile in previous period)
+  - factor_rank_autocorrelation(autocorrelation of daily Spearman rank correlations)
+  - plot_factor_rank_auto_correlation(visualize autocorrelation change)
+  
