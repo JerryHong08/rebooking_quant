@@ -501,4 +501,3 @@ markmap:
   - quantile_turunover(proportion of assets not in quantile in previous period)
   - factor_rank_autocorrelation(autocorrelation of daily Spearman rank correlations)
   - plot_factor_rank_auto_correlation(visualize autocorrelation change)
-  
