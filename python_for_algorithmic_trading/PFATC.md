@@ -430,7 +430,7 @@ markmap:
   - Nasdaq Data Link API Key(Environment Variable)
   - Key Zipline Features
     - Data and Time Rules(schedule_function)
-    - Pipeline API(attach_pipeline, pipeline_output)
+      - Pipeline API(attach_pipeline, pipeline_output)
     - Custom Factors(MomentumFactor, AverageDollarVolume)
     - Commission and Slippage Models(set_commission, set_slippage)
     - Record(data for output DataFrame)
@@ -501,3 +501,135 @@ markmap:
   - quantile_turunover(proportion of assets not in quantile in previous period)
   - factor_rank_autocorrelation(autocorrelation of daily Spearman rank correlations)
   - plot_factor_rank_auto_correlation(visualize autocorrelation change)
+
+## Chapter 9: Assess Backtest Risk and Performance Metrics with Pyfolio
+
+- No Single Metric Tells Entire Story(Shape Ratio, Max Drawdown insufficient)
+- Composite View(Multiple Metrics) for Nuanced Understanding
+- Visualizing Metrics Over Time Captures Strategy Dynamics
+- Pyfolio Reloaded(pyfolio): Risk and Performance Analysis Library
+- Part of Zipline Reloaded Ecosystem
+- Takes Zipline Output to Build Robust Suite of Metrics
+- Define Most Important Metrics for Backtest Assessment
+- Recipes
+  - Preparing Zipline Backtest Results for Pyfolio Reloaded
+  - Generating Strategy Performance and Return Analytics
+  - Building a Drawdown and Rolling Risk Analysis
+  - Analyzing Strategy Holdings, Leverage, Exposure, and Sector Allocations
+  - Breaking Down Strategy Performance to Trade Level
+- Preparing Backtest Results
+  - Data Preprocessing Required for Pyfolio
+  - pf.utils.extract_rets_pos_txn_from_zipline(helper function)
+  - Extracts returns, positions, transations DataFrames
+  - Replace Zipline Equity Objects with String Representations
+  - Build Symbol-to-Sector Mapping(OpenBB Platform screener)
+  - Accquire Benchmark Data(SPY ETF)
+  - Sector Information: Crucial for Understanding Return Source, Risk Management, Diversification
+- Generating Strategy Performance and Return Analytics
+  - Evaluate Effectiveness of Trading Algorithms
+  - Return Analysis(Equity Curves, Return Distributions)
+  - Temporal Analyses(Monthly/Annual Return)
+  - Compare Against Benchmark(isolate alpha)
+  - Pyfolio Plotting Functions
+  - plot_rolling_returns(equity curve vs. benchmark)
+  - plot_perf_stats(distribution of KPIs)
+  - plot_monthly_returns_heatmap
+  - plot_annual_returns
+  - plot_month_returns_dist(histogram)
+  - plot_returns(daily returns line plot)
+  - plot_returns_quantiles(box plot of daily, weekly, monthly returns quantiles)
+- Building Drawdown and Rolling Risk Analysis
+  - Risk Metrics Quantify & Manage Uncertainty
+  - Insights into Volatility, Drawdown, Adverse Conditions
+  - Pyfolio Plotting Functions
+  - plot_drawdown_periods(top 10 drawdowns, equity curve shading)
+  - plot_drawdown_underwater(visualize drawdown amounts)
+  - show_worst_drawdown_periods(table of top five drawdowns)
+  - plot_rolling_volatility(3-month rolling volatility vs. benchmark)
+  - plot_rolling_sharpe(3-month rolling Sharpe ratio vs. benchmar)
+- Analyzing Strategy Holdings, Leverage, Exposure, and Sector Allocations
+  - Holdings: Diversification & Concentration Risks
+  - Leverage: Excessive Borrowing Amplifies Losses
+  - Sector Allocation: Diversification across Industries
+  - Pyfolio Plotting Functions
+  - plot_holdings(daily, monthly avg, overall avvg)
+  - plot_long_short_holdings(number of long/short positions)
+  - plot_gross_levrage
+  - plot_expossures(long, short, net exposure)
+  - show_and_plot_top_positions(table/chart of max % allocation for top 10 holdings)
+  - get_sector_exposures, plot_sector_allocations(strategy sector allocation over time)
+- Breaking Down Strategy Performance to Trade Level
+  - Granular Insights into Strategy Returns Composition
+  - Identify Specific Trades Contributing Disproportionately to Risk/Returns
+  - Optimize Trade Execution, Entry/Exit Criteria, Asset Class
+  - pf.round_tips.extract_round_trips(identify opening/closing transactions for same asset)
+  - pf.round_trips.print_round_trip_stats(summary statistics:percent profitable, winning/losing trades, profit factor, avg winning trade)
+  - pf.plotting.plot_round_trip_lifetimes(duration of each round trip, per asset)
+  - Aggregate by Sector(using sector_map)
+
+## Chapter 10: Set Up the Interactive Brokers Python API
+
+- Deploy Algorithmic Trading Strategies to Live/Paper Trading Environment
+- TWS(Trader Workstation): Advanced Trading Platform
+- Alternatives: Alpaca, Think Or Swim, Tasty Trade, Tradier
+- TWS Features
+  - Robust Risk Management Tools
+  - Unparalleled Global Market Access(135 markets, 33 countries)
+  - Paper Trading Functionality(risk-free testing)
+  - API Intergration(Automate Strategies with Python)
+- IB API Concepts
+  - Asynchronous Model(non-blocking, requests+callbacks)
+  - Request-Callback Pattern(EClient sends reqquest, EWrapper handles response)
+  - Inheritance(child class acquires parent properties/methods)
+  - Overridng(child class provides specific implementation for parent method)
+- Recipes
+  - Building an Algorithmic Trading App
+  - Creating a Contract Object with the IB API
+  - Creating an Order Object with the IB API
+  - Fetching Historical Market Data
+  - Getting a Market Data Snapshot
+  - Streaming Live Tick Data
+  - Storing Live Tick Data in a Local SQL Database
+- Building an Algorithmic Trading App
+  - Reusable Code(connection, orders, data download)
+  - Install TWS & IB API
+  - TWS Configuration(Enable ActiveX/Socket Clients, Allow localhost, Note Socket Port)
+  - IBClient(inherits EClient, sends requests)
+  - IBWrapper(inherits EWrapper, handles callbacks)
+  - IBApp(inherits IBWrapper, IBClient; initializes connection, runs in separate thread)
+- Creating a Contract Object
+  - IB Contract: All info for IB to identify instrument
+  - Represent Broad Spectrum of Instruments(stocks, options, futures)
+  - Key Attributes: symbol, secType, expiry, strike, right, multiplier, exchange, currency, conId
+  - Custom Functions: future(), stock(), option()
+  - reqContractDetails(get contract detail, including conId)
+- Creating an Order Object
+  - Contains all info for IB to place orders
+  - Dozens of Order Types(market, limit, stop, algorithms)
+  - Key Attributes: orderId, action, totalQuantity, orderType, LmtPrice, auxPrice, tif, outsideRTH, account
+  - Custom FunctionL market(), limit(), stop()
+- Fetching Historical Market Data
+  - Asynchronous Process(non-blocking, event-driven)
+  - reqHistoricalData(sends request, parameters:contract,duration,bar size, data type)
+  - historicalData(callback, processes each bar asynchronously)
+  - pandas.DataFrame for data storage
+  - get_historical_data_for_many(request for multiple contracts)
+- Getting a Market Data Snapshot
+  - Current Market Price(e.g., for portfolio target calculations)
+  - Tick Types(last trade price, volume, bid/asl)
+  - reqMktData(requests market data)
+  - tickPrice(callback, handles specific tick types)
+- Streaming Live Market Data
+  - Tick-by-Tick Data(real-time, granular, Time & Sales window equivalent)
+  - reqTickByData(requests real-time tick-by-tick data)
+  - Tick Dataclass(Python dataclass for market data ticks)
+  - tickByTickBidAsk(callback for BidAsk tick type)
+  - Python Generator(yields Tick objects)
+  - stop_streaming_data(cancel tick data request)
+- Storing Live Tick Data in Local SQL Database
+  - Extend Chapter 4's SQLite Recipes
+  - Move Tick Dataclass & TRADE_BAR_PROPERTIES to utils.py
+  - IBApp.connection(property, creates SQLite connection)
+  - IBApp.create_table(creates bid_ask_data table)
+  - IBApp.stream_to_sqlite(stores tick data for specified duration)
+  - DB Browser for SQLite(inspect data)

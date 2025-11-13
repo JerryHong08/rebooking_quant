@@ -1,7 +1,3 @@
----
-
----
-
 # Introduction
 
 This project is designed for me better learning cookbooks with [NotebookLM](https://notebooklm.google.com/)-generated mindmaps.
