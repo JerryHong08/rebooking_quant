@@ -139,7 +139,53 @@ perf = run_algorithm(
         bundle="my-local"
 )
 
-print(perf.info())
+print(f'Debug performance: \n{perf.info()}')
+# <class 'pandas.core.frame.DataFrame'>
+# DatetimeIndex: 252 entries, 2015-01-02 21:00:00+00:00 to 2015-12-31 21:00:00+00:00
+# Data columns (total 39 columns):
+#  #   Column                   Non-Null Count  Dtype
+# ---  ------                   --------------  -----
+#  0   period_open              252 non-null    datetime64[ns, UTC]
+#  1   period_close             252 non-null    datetime64[ns, UTC]
+#  2   short_value              252 non-null    float64
+#  3   gross_leverage           252 non-null    float64
+#  4   shorts_count             252 non-null    int64
+#  5   starting_value           252 non-null    float64
+#  6   short_exposure           252 non-null    float64
+#  7   starting_cash            252 non-null    float64
+#  8   net_leverage             252 non-null    float64
+#  9   long_value               252 non-null    float64
+#  10  portfolio_value          252 non-null    float64
+#  11  starting_exposure        252 non-null    float64
+#  12  positions                252 non-null    object
+#  13  ending_value             252 non-null    float64
+#  14  returns                  252 non-null    float64
+#  15  longs_count              252 non-null    int64
+#  16  orders                   252 non-null    object
+#  17  ending_exposure          252 non-null    float64
+#  18  transactions             252 non-null    object
+#  19  ending_cash              252 non-null    float64
+#  20  long_exposure            252 non-null    float64
+#  21  pnl                      252 non-null    float64
+#  22  capital_used             252 non-null    float64
+#  23  excess_return            252 non-null    float64
+#  24  benchmark_period_return  252 non-null    float64
+#  25  benchmark_volatility     251 non-null    float64
+#  26  period_label             252 non-null    object
+#  27  treasury_period_return   252 non-null    float64
+#  28  max_drawdown             252 non-null    float64
+#  29  max_leverage             252 non-null    float64
+#  30  algorithm_period_return  252 non-null    float64
+#  31  alpha                    32 non-null     float64
+#  32  beta                     32 non-null     float64
+#  33  trading_days             252 non-null    int64
+#  34  sharpe                   226 non-null    float64
+#  35  sortino                  226 non-null    float64
+#  36  algo_volatility          251 non-null    float64
+#  37  factor_data              251 non-null    object
+#  38  prices                   251 non-null    object
+# dtypes: datetime64[ns, UTC](2), float64(28), int64(3), object(6)
+# memory usage: 78.8+ KB
 
 # save
 perf.to_pickle("mean_reversion.pickle")

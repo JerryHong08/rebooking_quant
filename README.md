@@ -9,7 +9,7 @@ For visualization, I use [Markmap](https://markmap.js.org/)--a mindmap visualize
 
 The overall process involves reworking the NotebookLM-generated mindmap. If there's something I want to exlore more in more details. I refer back to the correspoding chapter and write more details notes or codes file under each directory.
 
-For this project, the primary focus is on developing **quantitatve coding skills**. Therefore, I use Jupter Notebook alongside each book's mindmap and chapter as notes and explore.
+For this project, the primary focus is on developing **quantitative coding skills**. Therefore, I use Jupter Notebook alongside each book's mindmap and chapter as notes and explore ideas.
 
 ## Book List
 
