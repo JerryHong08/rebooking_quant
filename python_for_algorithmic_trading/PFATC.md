@@ -633,3 +633,149 @@ markmap:
   - IBApp.create_table(creates bid_ask_data table)
   - IBApp.stream_to_sqlite(stores tick data for specified duration)
   - DB Browser for SQLite(inspect data)
+
+## Chapter 11: Manage Orders, Positions, and Portfolios with the IB API
+
+- Efficient Management of Orders, Positions, Portfolio Data is Critical
+- Managing Orders: Execute New, Cancel Exitsting, Update Orders
+- Managing Positions: Monitor Live PnL, Informed Decisions
+- Portfolio Data: Real-time Risk Statistics
+- IB API Request-Callback Pattern for ALL Management Aspects
+- Submit & Modify Orders, Obtain Key Portfolio Details, Compute PnL
+- Recipes
+  - Executing Orders with the IB API
+  - Managing Orders Once They're Placed
+  - Getting Details About Your Portfolio
+  - Inspecting Portfolio Profit and Loss
+  - Computing Portfolio Profit and Loss
+- Executing Orders
+  - nextValidOrderId: Unique Identifier for Each Other
+  - Used to Preserve Order Untegrity, Prevent Overlap
+  - Server Provides Initial ID, Client Increments for New Orders
+  - IB Wrapper Overrides
+    - nextValidId(captures initial order_id)
+    - orderStatus(updates on order status)
+    - openOrder(info on submitted, unexecuted orders)
+    - execDetails(detailed execution info)
+  - IBClient.send_order(accepts contract/order, places order, increments ID)
+  - placeOrder(IB API method)
+- Managing Orders
+  - Canceling Orders(no longer wanted, market conditions change)
+  - Updating Orders(change quantity, limit price, stop price)
+  - IB Reconmmends only changing price, size, ETF
+  - Easier to Cancel & Re-enter with Updated Parameters
+  - IBClient.cancel_all_orders(reqGlobalCancel)
+  - IBClient.cancel_order_by_id(cancelOrder)
+  - IBClient.update_order(cancels existing, sends new)
+- Getting Portfolio Details
+  - Comprehensive Snapshot(157 different values)
+  - Account Values(updateAccountValue callback)
+  - Categorized by Commodities(-C), Securities(-S), Totals(no suffix)
+  - IBWrapper.account_values(dictionary to store data)
+  - IBWrapper.updateAccountValue(callback)
+  - IBClient.get_account_values(reqAccountUpdates, returns dictionary or specific key)
+  - Common Values: AvailableFunds, Buying Power, CashBalance, NetLiquidation, etc.
+- Inspecting Positions and Position Details
+  - Position Size, Market Prize, Value, Average Cost, PnL
+  - Comprehensive View of Holdings
+  - IBWrapper.positions(dictionary to store data)
+  - IBWrapper.updatePortfolio(callback triggered by reqAccountUpdates)
+  - IBClient.get_positions(triggers callback, returns dictionary)
+- Computing Portfolio Profit and Loss
+  - Aggregate Daily PnL, Total Unrealized PnL, Total Realized PnL
+  - Unlock Suite of Risk Metrics
+  - IBWrapper.account_pnl(dictionary to store data)
+  - IBWrapper.pnl(callback for PnL data)
+  - IBClient.get_pnl(reqPnL, returns PnL dictionary)
+  - Unrealized PnL(potential gain/loss on open investment)
+  - Realized PnL(gain/loss on sold asset)
+
+## Chapter 12: Deploy Strategies to a Live Environment
+  
+- Critical Pieces: Risk/Performance Metrics, Sophisticated Order Strategies
+- empyrical-reloaded: Generates Statistics Based on Portfolio Returns
+- Used for Performance/Risk Analystics(behind Pyfolio Reloaded)
+- Calculate KPIs: Sharpe, Sortino, Max Drawdown(real-time portfolio data)
+- Asynchronous Code Execution(threads) for PnL calculations
+- Finalize Position Managemet Code(target orders: contracts, value, percent)
+- Unlocks Portfolio-Based Strategies
+- Recipes
+  - Calculating Real-Time Key Performance and Risk Indicators
+  - Sending Orders Based on Portfolio Targets
+  - Deploying a Monthly Factor Portfolio Strategy
+  - Deploying an Options Combo Strategy
+  - Deploying an Intraday Multi-Asset Mean Reversion Strategy
+- Calculating Real-Time Performance and Risk Indicators
+  - Compare Live Performance to Backtests
+  - Immediate Feedback, Adjustments for Volatility
+  - Continuously Monitor Drawdowns, Volatility, Value and Risk
+  - empyrical-reloaded(install with pip)
+  - IB API no direct portfolio returns(build custom method)
+  - Continuous PnL Requests(on seperate thread for independence)
+  - IBClient.get_streaming_pnl(periodically requests PnL)
+  - IBClient.get_sreaming_returns(compute periodic returns, updates self.portfolio_returns)
+  - IBApp Properties(empyrical-reloaded based)
+    - cumulative_returns
+    - max_drawdown
+    - volatility(sample std dev, not annualized for intraday)
+    - omega_ratio
+    - sharpe_ratio(custom calculation for intraday)
+    - cvar(conditional value at risk, percentage & monetary value)
+- Sending Orders Based on Portfolio Targets
+  - Flexibility to Submit Orders(combining real-time positions/net liquidation)
+  - Dynamically Adjust Positions to Qauntity/Value Tartgets
+  - Calculate Order Sizes as Percentage of Portfolio
+  - Results in Responsive Trading System
+  - IBClient Order Methods(under send_order)
+  - order_value(fixed monetart amount)
+  - order_target_quantity(adjust to target number of contracts)
+  - order_percent(order specified percent of portfolio value)
+  - order_target_value(adjust to target dollar value)
+  - order_target_percent(adjust to target percent of portfolio value)
+- Deploying a Monthhly Factor Portfolio Strategy
+  - Integrate Momentum Factor(from Chapter5)into Trading App
+  - Downloads & Process Premium U.S. Equities Data(20000 stocks)
+  - Build Factor Portfolios with Entire Universe of Equities
+  - Periodic Rebalancing(monthly, after market hours)
+  - Acquires Latest Price Data, Computes Momentum Factor
+  - Identifies Top(Long) and Bottom(Short) Momentum Stocks
+  - Execute Orders with Target Percentage Allocation
+  - Paid Subscription: QuoteMedia's End of Day US Stock Prices(Nasdaq Data Link)
+  - Custom Zipline Reloaded Exetension for Ingestion
+  - Momentum Factor(CustomFactor)
+  - make_pipeline(creates Pipeline for asset selection)
+  - Load Extension, Ingest Bundle, Load Bundle Data
+  - SimplePipelineEngine(loader, asset_finder)
+  - Run Pipeline, Clean DataFrame
+  - Query Long/Short Positions
+  - Equal-Weight Allocation
+  - Loop Through Longs/Shorts, Order Target Percent
+  - Optional: Add AverageDollarVolume Screen for Liquidity
+- Deploying an Options Combo Strategy
+  - Options: Non-Linear Instruments, Multidimensional Value
+  - Profit from Range of Outcomes
+  - Straddle Strategy: Buy Call & Put(same strike/expiry), Bet on Volatility
+  - Premium Collection: Short Iron Condor(sell call/put spread), Bet on Low Volatility
+  - Model Options Trades in TWS Strategy Builder
+  - Python Implementation(combo_leg, spread functions for multi-leg orders)
+  - reqContractDetails(to get conId for combo_leg)
+  - Long Strangle Example(long call, long put, different strikes)
+  - Order market combo(send market order for strangle)
+- Deploying an Intraday Multi-Asset Mean Reversion Strategy
+  - Relative Value Strategy: Crack Spread for Refiner Stocks
+  - Crack Spread: Price differential between crude oil and refined products
+  - Strategy: 1 HO, 2RB, -3 CL (Heating Oil, RBOB Gasoline, Light Sweet Crude Oil)
+  - Economic Rationale: Refiner stocks benefit from widening creack spread
+  - Strategy: Identify widening crack spread, refiner stock hasn't reacted -> Go long PSX
+  - Continuous Loop(through trading day)
+  - Download Historical Data(1-minute bars over last week)
+  - Compute 1:2:3 Crack Spread
+  - Normalize Crack Spread and Refiner Stock(rolling z-score)
+  - Trading Signal(z-socre, standard deviation threshold)
+
+## Chapter 13: Advanced Recipes for Market Data and Strategy Management
+
+- Streaming Real-Time Options Data with ThetaData
+- Using the ArcticDB DataFrame Database for Tick Storage
+- Triggering Real-Time Risk Limit Alerts
+- Storing Trade Execution Detials in a SQL Database
