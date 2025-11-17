@@ -9,14 +9,14 @@ from order import market, limit, BUY, SELL
 import empyrical as ep
 from utils import (
         CREATE_BID_ASK_DATA,
-        CREATA_OPEN_ORDERS,
+        CREATE_OPEN_ORDERS,
         CREATE_TRADES
 )
 
 windows_host = os.getenv("WINDOWS_HOST")
 
 class IBApp(IBWrapper, IBClient):
-    def __init__(self, ip, port, client_id, account, interval=5):
+    def __init__(self, ip, port, client_id, account, interval=5, **kwargs):
         IBWrapper.__init__(self)
         IBClient.__init__(self, wrapper=self)
         self.account = account
