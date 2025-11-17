@@ -16,7 +16,9 @@ For this project, the primary focus is on developing **quantitative coding skill
 All mindmaps are stored in the `figures/book_mindmap`. Currently, mindmaps for these books are generated.
 
 1. ✅ _Python For Algorithmic Trading Cookbook_
-![Python For Algorithmic Trading Cookbook](./figures/book_cover/Python%20For%20Algorithmic%20Trading%20Cookbook_Cover.jpg)
+
+    <img src="./figures/book_cover/Python%20For%20Algorithmic%20Trading%20Cookbook_Cover.jpg" alt="Python For Algorithmic Trading Cookbook" width="200">
+
 2. _Options Trading Strategies_
 
 3. _Advanced Algorithmic Trading with Bayesian Methods and Machine Learning_
