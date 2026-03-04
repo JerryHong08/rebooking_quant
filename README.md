@@ -19,6 +19,10 @@ All mindmaps are stored in the `figures/book_mindmap`. Currently, mindmaps for t
 
     <img src="./figures/book_cover/Python%20For%20Algorithmic%20Trading%20Cookbook_Cover.jpg" alt="Python For Algorithmic Trading Cookbook" width="200">
 
-2. _Options Trading Strategies_
+2. ✅ _Trading and Exchanges:Market microstructure for Practitioners_
 
-3. _Advanced Algorithmic Trading with Bayesian Methods and Machine Learning_
+    <img src="./figures/book_cover/Trading and Exchanges:Market microstructure for Practitioners.png" alt="Trading and Exchanges:Market microstructure for Practitioners" width="200">
+
+3. _Options Trading Strategies_
+
+4. _Advanced Algorithmic Trading with Bayesian Methods and Machine Learning_
